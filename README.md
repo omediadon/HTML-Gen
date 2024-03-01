@@ -4,6 +4,7 @@
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links-->
 <div align="center">
 
+[![Downloads][composer-shield]][composer-url]
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -169,7 +170,8 @@ $form = $form->addElement(new Email("email", ["placeholder" => "Email Address"])
 ## Made with 💕
 
 <!-- MARKDOWN LINKS & IMAGES -->
-
+[composer-shield]: https://img.shields.io/packagist/dt/xana/gen-html.svg?style=for-the-badge
+[composer-url]: https://packagist.org/packages/xana/gen-html
 [contributors-shield]: https://img.shields.io/github/contributors/omediadon/HTML-Gen.svg?style=for-the-badge
 [contributors-url]: https://github.com/omediadon/HTML-Gen/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/omediadon/HTML-Gen.svg?style=for-the-badge
