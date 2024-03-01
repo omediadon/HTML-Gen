@@ -1,24 +1,27 @@
 {
-	"name": "xana/gen-html",
-	"autoload": {
-		"psr-4": {
-			"Xana\\GenHtml\\": "src/"
-		}
-	},
-	"authors": [
-		{
-			"name": "omediadon",
-			"email": "omediadon@gmail.com"
-		}
-	],
-	"require": {
-		"php": ">=8.1",
-		"selective/array-reader": "^2.1"
-	},
-	"scripts": {
-		"start": [
-			"Composer\\Config::disableProcessTimeout",
-			"@php -S localhost:8000"
-		]
-	}
+  "name": "xana/gen-html",
+  "autoload": {
+    "psr-4": {
+      "Xana\\GenHtml\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "omediadon",
+      "email": "omediadon@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=8.1",
+    "selective/array-reader": "^2.1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^11"
+  },
+  "scripts": {
+    "start": [
+      "Composer\\Config::disableProcessTimeout",
+      "@php -S localhost:8000"
+    ]
+  }
 }

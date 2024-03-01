@@ -3,14 +3,19 @@
 namespace Xana\GenHtml\Elements;
 
 use Xana\GenHtml\HtmlElement;
+use function array_merge;
 
 class SelectOption extends HtmlElement{
 
-	public function __construct(string $text, ?string $selected = null, array $attributes = []){
-		$attributes = !empty($selected) ? array_merge([
-														  'selected' => $selected
-													  ], $attributes) : $attributes;
-		parent::__construct("option", $attributes);
+	public function __construct(string $text, string $value = '', ?string $selected = null, array $attributes = []){
+		$optionAttributes = ['value' => $value];
+		if(!empty($selected)){
+			$optionAttributes = array_merge([
+												'selected' => $selected,
+											], $optionAttributes);
+		}
+
+		parent::__construct("option", array_merge($optionAttributes, $attributes));
 		$this->setText($text);
 	}
 }

@@ -8,13 +8,13 @@ use Xana\GenHtml\HtmlElement;
 class Header extends HtmlElement{
 	private int $level;
 
-	public function __construct(int $level, string $text, array $attributes = [],){
-		parent::__construct($this->h($level), $attributes);
+	public function __construct(int $level, string $text,){
+		parent::__construct($this->level($level));
 		$this->setText($text);
 	}
 
 	// Helper function for header level (optional)
-	private function h(int $level): string{
+	private function level(int $level): string{
 		if($level < 1 || $level > 6){
 			throw new InvalidArgumentException("Header level must be between 1 and 6.",);
 		}

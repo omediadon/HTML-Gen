@@ -3,60 +3,32 @@
 namespace Xana\GenHtml\Elements;
 
 use Xana\GenHtml\HtmlElement;
+use function array_merge;
+use function array_unshift;
 
 class Select extends HtmlElement{
-	private array   $options = [];
-	private ?string $selectedValue;
 
-	public function __construct(string $name, array $attributes = [], array $options = [], bool $multiple = false, string $selectedValue = null,){
-		$initArres  = [
-			"name"     => $name,
-			'multiple' => $multiple
+	public function __construct(string $name, bool $multiple = false, array $attributes = []){
+		$selectAttributes = [
+			"name" => $name,
 		];
-		$attributes = $multiple ? array_merge($initArres, $attributes) : array_merge(["name" => $name], $attributes);
-		parent::__construct("select", $attributes,);
-		$this->options       = $options;
-		$this->selectedValue = $selectedValue;
+		if($multiple){
+			$selectAttributes['multiple'] = $multiple;
+		}
+		$this->defaultClass = 'form-control';
+		parent::__construct("select", array_merge($selectAttributes, $attributes));
 	}
 
 	public function addEmptyOption(): self{
-		$this->options[] = [
-			"value"      => "",
-			"text"       => "-- Please Select --",
-			"attributes" => [],
-		];
+		$emptyOption = new SelectOption('-- Please Select --');
+		array_unshift($this->elements, $emptyOption);
 
 		return $this;
 	}
 
-	public function addOption(string $value, string $text, array $attributes = [],): self{
-		$this->options[] = [
-			"value"      => $value,
-			"text"       => $text,
-			"attributes" => $attributes,
-		];
+	public function addOption(SelectOption $option): self{
+		$this->elements[] = $option;
 
 		return $this;
-	}
-
-	public function setSelected(string $value): self{
-		$this->selectedValue = $value;
-
-		return $this;
-	}
-
-	public function render(): string{
-		foreach($this->options as $option){
-			$optionAttributes = [];
-			if(!empty($option["attributes"])){
-				foreach($option["attributes"] as $key => $value){
-					$optionAttributes[$key] = $value;
-				}
-			}
-			$selected         = !empty($option["selected"]) ? "selected" : null;
-			$this->elements[] = new SelectOption($option["text"], $selected, $optionAttributes);
-		}
-
-		return parent::render();
 	}
 }

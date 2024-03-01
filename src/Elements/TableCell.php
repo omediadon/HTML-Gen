@@ -8,7 +8,7 @@ class TableCell extends HtmlElement{
 
 	public function __construct(string $content, array $attributes = []){
 		parent::__construct('td', $attributes);
-		$this->setText($this->escapeHtml($content)); // Escape HTML special characters
+		$this->setText($content);
 	}
 
 	public function asHeading(): self{

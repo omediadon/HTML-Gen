@@ -8,9 +8,12 @@ class TableRow extends HtmlElement{
 	protected array $cells;
 	protected bool  $isHeader = false;
 
-	public function __construct(?string $element = null, array $cells = []){
+	/**
+	 * @param TableCell[] $cells
+	 * @param string|null $element
+	 */
+	public function __construct(?string $element = null){
 		parent::__construct($element != null ? $element : 'tr');
-		$this->cells = $cells;
 	}
 
 	public function addCell(TableCell $cell): self{

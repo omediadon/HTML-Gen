@@ -8,7 +8,9 @@ class Meta extends HtmlElement{
 	public function __construct(string $name, string $content){
 		parent::__construct("meta", [
 			"name"    => $name,
-			"content" => $content
+			"content" => $content,
 		]);
+		parent::noDefaults();
 	}
+
 }

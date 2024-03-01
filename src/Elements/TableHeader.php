@@ -4,10 +4,13 @@ namespace Xana\GenHtml\Elements;
 
 class TableHeader extends TableRow{
 
-	public function __construct(array $cells = []){
+	/**
+	 * @inheritDoc
+	 */
+	public function __construct(){
 		parent::__construct('thead');
-		$this->cells    = $cells;
-		$this->isHeader = true;
+		$this->isHeader     = true;
+		$this->defaultClass = 'table-dark';
 	}
 
 }
