@@ -18,11 +18,6 @@ abstract class HtmlElement{
 		$this->attributes = $attributes;
 	}
 
-	public function addElement(HtmlElement $element): self{
-		$this->elements[] = $element;
-		return $this;
-	}
-
 	public function render(): string{
 		if($this->hasDefaults){
 			$this->attributes = array_merge([
@@ -38,15 +33,23 @@ abstract class HtmlElement{
 		foreach($this->elements as $element){
 			$innerHtml .= $element->render();
 		}
-		return "<{$this->tagName} " . implode(" ", $attributes) . ">" . $this->text . $innerHtml . "</{$this->tagName}>";
+
+		return "<$this->tagName " . implode(" ", $attributes) . ">" . $this->text . $innerHtml . "</{$this->tagName}>";
 	}
 
-	protected function noDefaults(){
+	protected function addElement(HtmlElement $element): self{
+		$this->elements[] = $element;
+
+		return $this;
+	}
+
+	protected function noDefaults(): void{
 		$this->hasDefaults = false;
 	}
 
 	protected function setText(string $text): self{
 		$this->text = $this->escapeHtml($text);
+
 		return $this;
 	}
 

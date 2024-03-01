@@ -2,9 +2,9 @@
 
 namespace Xana\GenHtml\Elements;
 
-use Xana\GenHtml\HtmlElement;
+use Xana\GenHtml\HtmlContainer;
 
-class Div extends HtmlElement{
+class Div extends HtmlContainer{
 	public function __construct(array $attributes = []){
 		$this->defaultClass = 'row';
 		parent::__construct("div", $attributes);
