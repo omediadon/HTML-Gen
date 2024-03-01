@@ -1,10 +1,6 @@
 {
 	"name": "xana/gen-html",
-	"autoload": {
-		"psr-4": {
-			"Xana\\GenHtml\\": "src/"
-		}
-	},
+	"license": "LGPL-3.0-or-later",
 	"type": "library",
 	"authors": [
 		{
@@ -12,7 +8,11 @@
 			"email": "omediadon@gmail.com"
 		}
 	],
-	"license": "LGPLv3",
+	"autoload": {
+		"psr-4": {
+			"Xana\\GenHtml\\": "src/"
+		}
+	},
 	"require": {
 		"php": ">=8.1",
 		"selective/array-reader": "^2.1"
