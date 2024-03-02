@@ -1,0 +1,56 @@
+name: Create Tag on Main Push or Merge
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+    types: [closed]
+
+jobs:
+  verify_and_tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate --strict
+
+      - name: Cache Composer packages
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+        # Fail the job if the command fails
+        exit-on-failure: true
+
+      - name: Extract version from composer.json
+        id: extract_version
+        depends:
+          on: [ steps.install-dependencies ]
+        run: |
+          if [[ ! -f composer.json ]]; then
+            echo "composer.json not found."
+            exit 1
+          fi
+          version=$(jq -r .version composer.json)
+          if [[ -z "$version" ]]; then
+            echo "version is not defined in composer.json."
+            exit 1
+          fi
+          echo "::set-output name=version::$version"
+
+      - name: Create tag
+        if: steps.extract_version.outputs.version
+        run: |
+          git tag ${{ steps.extract_version.outputs.version }}
+          git push origin ${{ steps.extract_version.outputs.version }}
+        depends:
+          on: [ steps.extract-version ]
