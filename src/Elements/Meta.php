@@ -11,6 +11,7 @@ class Meta extends HtmlElement{
 			"content" => $content,
 		]);
 		parent::noDefaults();
+		parent::selfClosing();
 	}
 
 }

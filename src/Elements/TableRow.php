@@ -16,7 +16,7 @@ class TableRow extends HtmlElement{
 		parent::__construct($element != null ? $element : 'tr');
 	}
 
-	public function addCell(TableCell $cell): self{
+	public function addCell(TableCell $cell): static{
 		$this->cells[] = $cell;
 
 		return $this;

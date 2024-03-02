@@ -9,8 +9,8 @@ class TableHeader extends TableRow{
 	 */
 	public function __construct(){
 		parent::__construct('thead');
-		$this->isHeader     = true;
-		$this->defaultClass = 'table-dark';
+		$this->isHeader       = true;
+		$this->defaultClasses = 'table-dark';
 	}
 
 }

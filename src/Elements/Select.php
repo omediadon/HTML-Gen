@@ -15,18 +15,18 @@ class Select extends HtmlElement{
 		if($multiple){
 			$selectAttributes['multiple'] = $multiple;
 		}
-		$this->defaultClass = 'form-control';
+		$this->defaultClasses = 'form-control';
 		parent::__construct("select", array_merge($selectAttributes, $attributes));
 	}
 
-	public function addEmptyOption(): self{
+	public function addEmptyOption(): static{
 		$emptyOption = new SelectOption('-- Please Select --');
 		array_unshift($this->elements, $emptyOption);
 
 		return $this;
 	}
 
-	public function addOption(SelectOption $option): self{
+	public function addOption(SelectOption $option): static{
 		$this->elements[] = $option;
 
 		return $this;

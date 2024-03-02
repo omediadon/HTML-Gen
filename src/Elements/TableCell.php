@@ -11,7 +11,7 @@ class TableCell extends HtmlElement{
 		$this->setText($content);
 	}
 
-	public function asHeading(): self{
+	public function asHeading(): static{
 		$this->tagName = 'th';
 
 		return $this;
