@@ -7,13 +7,16 @@ on:
   pull_request:
     branches:
       - main
-    types: [closed]
+    types: [ closed ]
 
 jobs:
   verify_and_tag:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.0
 
       - name: Validate composer.json and composer.lock
         run: composer validate --strict
@@ -27,14 +30,11 @@ jobs:
             ${{ runner.os }}-php-
 
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress
-        # Fail the job if the command fails
-        exit-on-failure: true
+        run: |
+          composer install --prefer-dist --no-progress || exit 1
 
       - name: Extract version from composer.json
         id: extract_version
-        depends:
-          on: [ steps.install-dependencies ]
         run: |
           if [[ ! -f composer.json ]]; then
             echo "composer.json not found."
@@ -52,5 +52,3 @@ jobs:
         run: |
           git tag ${{ steps.extract_version.outputs.version }}
           git push origin ${{ steps.extract_version.outputs.version }}
-        depends:
-          on: [ steps.extract-version ]
