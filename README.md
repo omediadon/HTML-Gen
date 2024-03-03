@@ -76,6 +76,7 @@ _This is a library that does just that; generates HTML markdown using fluent PHP
     * `Forms`
     * `Headings`
     * `Lists (ordered and unordered)`
+    * `Line break`
 2. CSS Framework
     * `Bootstrap 5`
 
@@ -123,11 +124,17 @@ use Xana\GenHtml\Elements\TextArea;
   
 require 'vendor/autoload.php';
   
+$paragraphWithInlineLink = new Paragraph('A paragraph, but you can click {here} to visit example.com');
+
+$paragraphWithInlineLink->addInlineElement('here', new link('//example.com', 'here'));
+ 
+$paragraphWithInlineLink->render();
+  
 $defaultAttrs = [  
     "required" => true,  
     'placeholder' => 'Enter your message here',  
 ];
-$form = $form->addElement(new Email("email", ["placeholder" => "Email Address"]))  
+$form = $form->addElement(new Email("email", ["placeholder" => "Email Address", 'class'=>'bg-info'])->keepDefaultClasses())  
              ->addElement(new Password("password", ["placeholder" => "Password"]))  
              ->addElement(new TextArea('the-text', $defaultAttrs))  
              ->addElement(new Button("Login"));
