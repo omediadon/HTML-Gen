@@ -9,16 +9,17 @@ use function implode;
 use function str_replace;
 
 abstract class HtmlElement{
-	protected string $defaultClasses     = "";
-	protected string $tagName;
-	protected array  $attributes         = [];
-	protected array  $classes            = [];
-	protected array  $elements           = [];
-	protected array  $inlineElements     = [];
-	protected string $text               = "";
-	private bool     $hasDefaultClasses  = true;
-	private bool     $keepDefaultClasses = false;
-	private bool     $selfClosing        = false;
+	protected string     $defaultClasses     = "";
+	protected string     $tagName;
+	protected array      $attributes         = [];
+	protected array      $classes            = [];
+	protected array      $elements           = [];
+	protected array      $inlineElements     = [];
+	protected string     $text               = "";
+	private bool         $hasDefaultClasses  = true;
+	private bool         $keepDefaultClasses = false;
+	private bool         $selfClosing        = false;
+	private ?HtmlElement $replacement        = null;
 
 	public function __construct(string $tagName, array $attributes = []){
 		$this->tagName    = $tagName;
@@ -26,6 +27,9 @@ abstract class HtmlElement{
 	}
 
 	public function render(): string{
+		if($this->replacement != null){
+			return $this->replacement->render();
+		}
 		$this->setClasses();
 		$attributes = [];
 		foreach($this->attributes as $key => $value){
@@ -74,6 +78,14 @@ abstract class HtmlElement{
 
 	public function keepDefaultClasses(): static{
 		$this->keepDefaultClasses = true;
+
+		return $this;
+	}
+
+	public function replaceIf(bool $condition, HtmlElement $replacement): static{
+		if($condition){
+			$this->replacement = $replacement;
+		}
 
 		return $this;
 	}
