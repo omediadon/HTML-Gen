@@ -8,9 +8,6 @@ jobs:
   verify_and_tag:
     runs-on: ubuntu-latest
     steps:
-      - name: Enable extended debugging
-        run: |
-          set -x
       - uses: actions/checkout@v4
       - uses: shivammathur/setup-php@v2
         with:
@@ -27,7 +24,7 @@ jobs:
 
       - name: Check if commit message indicates merge
         run: |
-          if [[ $GITHUB_REF -eq "refs/heads/main" ]]; then
+          if [[ "$GITHUB_REF" == "refs/heads/main" ]]; then
             if grep -q "Merge pull request" "$GITHUB_SHA"; then
               echo "Detected a successful merge request."
             else
@@ -42,10 +39,12 @@ jobs:
       - name: Exclude VERSION file **(moved before tag creation)**
         run: |
           git update-index --skip-worktree VERSION
+          echo "Tag name: $VERSION"
           
 
       - name: Validate composer.json and composer.lock
-        run: composer validate --strict
+        run: |
+          composer validate --strict
 
       - name: Cache Composer packages
         uses: actions/cache@v3
