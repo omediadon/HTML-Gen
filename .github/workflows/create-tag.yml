@@ -63,7 +63,7 @@ jobs:
         if: success()
         run: |
           git config --global user.name "Omar SAKHRAOUI"
-          git config --global user.email "webmaster@xanaserver.cloud"
+          git config --global user.email "omediadon@gmail.com"
           git config --list
           git tag -a "$VERSION" -m "Version $VERSION"
           git push origin --tags
