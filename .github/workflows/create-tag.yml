@@ -8,6 +8,9 @@ jobs:
   verify_and_tag:
     runs-on: ubuntu-latest
     steps:
+      - name: Enable extended debugging
+        run: |
+          set -x
       - uses: actions/checkout@v4
       - uses: shivammathur/setup-php@v2
         with:
