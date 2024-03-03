@@ -71,7 +71,7 @@ require 'vendor/autoload.php';
 			"required"    => true,
 			'placeholder' => 'Enter your message here',
 		];
-		$form         = new Form("/login");
+		$form         = new Form("/login", 'post');
 		$form         = $form->addElement(new Email("email", ["placeholder" => "Email Address"]))
 							 ->addElement((new Password("password", ["placeholder" => "Password"]))->addClass('bg-info')
 																								   ->keepDefaultClasses())
