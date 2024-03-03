@@ -9,8 +9,8 @@ use function implode;
 use function str_replace;
 
 abstract class HtmlElement{
-	protected array  $dontFlush      = [];
-	protected string $defaultClasses = "";
+	protected array      $dontFlush          = [];
+	protected string     $defaultClasses     = "";
 	protected string     $tagName;
 	protected array      $attributes         = [];
 	protected array      $classes            = [];
@@ -115,6 +115,18 @@ abstract class HtmlElement{
 			$this->classes    = [];
 			$this->attributes = array_filter($this->attributes, $filter, ARRAY_FILTER_USE_KEY);
 		}
+
+		return $this;
+	}
+
+	public function id(string $id): static{
+		$this->attributes['id'] = $id;
+
+		return $this;
+	}
+
+	public function data(string $name, string $data): static{
+		$this->attributes['data-' . $name] = $data;
 
 		return $this;
 	}
