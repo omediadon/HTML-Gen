@@ -78,7 +78,7 @@ abstract class HtmlElement{
 		return $this;
 	}
 
-	public function selfClosing(){
+	protected function selfClosing(): void{
 		$this->selfClosing = true;
 	}
 
