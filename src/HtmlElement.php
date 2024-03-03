@@ -9,7 +9,8 @@ use function implode;
 use function str_replace;
 
 abstract class HtmlElement{
-	protected string     $defaultClasses     = "";
+	protected array  $dontFlush      = [];
+	protected string $defaultClasses = "";
 	protected string     $tagName;
 	protected array      $attributes         = [];
 	protected array      $classes            = [];
@@ -80,12 +81,6 @@ abstract class HtmlElement{
 		return $this;
 	}
 
-	public function keepDefaultClasses(): static{
-		$this->keepDefaultClasses = true;
-
-		return $this;
-	}
-
 	public function replaceIf(bool $condition, HtmlElement $replacement): static{
 		if($condition){
 			$this->replacement = $replacement;
@@ -95,14 +90,37 @@ abstract class HtmlElement{
 	}
 
 	public function flushAttribute(?string $name = null): static{
-		if(isset($name)){
-			if($name == 'class'){
+		if(!is_null($name) && !in_array($name, $this->dontFlush)){
+			if($name === 'class'){
 				$this->classes = [];
+				if(!$this->keepDefaultClasses){
+					$this->defaultClasses    = '';
+					$this->hasDefaultClasses = false;
+				}
 			}
-			if(isset($this->attributes[$name])){
-				unset($this->attributes[$name]);
+			else{
+				if(isset($this->attributes[$name])){
+					unset($this->attributes[$name]);
+				}
 			}
 		}
+		else if(is_null($name)){
+			$filter = function($key){
+				return in_array($key, $this->dontFlush);
+			};
+			if(!$this->keepDefaultClasses){
+				$this->defaultClasses    = '';
+				$this->hasDefaultClasses = false;
+			}
+			$this->classes    = [];
+			$this->attributes = array_filter($this->attributes, $filter, ARRAY_FILTER_USE_KEY);
+		}
+
+		return $this;
+	}
+
+	public function keepDefaultClasses(): static{
+		$this->keepDefaultClasses = true;
 
 		return $this;
 	}

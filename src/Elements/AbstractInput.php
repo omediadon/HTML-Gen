@@ -5,8 +5,13 @@ namespace Xana\GenHtml\Elements;
 use Xana\GenHtml\HtmlElement;
 
 abstract class AbstractInput extends HtmlElement{
+	protected array $dontFlush = [
+		'name',
+		"type"
+	];
+
 	public function __construct(string $type, string $name, array $attributes = [],){
-		$inputAttributes      = [
+		$inputAttributes = [
 			"type" => $type,
 			"name" => $name,
 		];

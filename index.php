@@ -20,6 +20,7 @@ use Xana\GenHtml\Elements\Table;
 use Xana\GenHtml\Elements\TableCell;
 use Xana\GenHtml\Elements\TableHeader;
 use Xana\GenHtml\Elements\TableRow;
+use Xana\GenHtml\Elements\Text;
 use Xana\GenHtml\Elements\TextArea;
 use Xana\GenHtml\Elements\UnorderedList;
 
@@ -38,6 +39,11 @@ require 'vendor/autoload.php';
 	<body >
 
 		<?php
+
+		echo (new Text("text", ['someArr' => "dgfgdfg"]))->addClass('vlllezdf')
+														 ->keepDefaultClasses() // has to be called before flushes if you want the default classes to be kept
+														 ->flushAttribute()
+														 ->render();
 
 		$paragraphWithInlineLink = new Paragraph('A paragraph, but you can click {here}');
 
@@ -68,7 +74,7 @@ require 'vendor/autoload.php';
 		$form         = new Form("/login");
 		$form         = $form->addElement(new Email("email", ["placeholder" => "Email Address"]))
 							 ->addElement((new Password("password", ["placeholder" => "Password"]))->addClass('bg-info')
-													   ->keepDefaultClasses())
+																								   ->keepDefaultClasses())
 							 ->addElement($select)
 							 ->addElement(new TextArea('the-text', $defaultAttrs))
 							 ->addElement(new Button("Login"));
@@ -77,8 +83,7 @@ require 'vendor/autoload.php';
 		$table        = $table->addRow((new TableHeader())->addCell(new TableCell('Product Name'))
 														  ->addCell(new TableCell('Price'))
 														  ->addCell(new TableCell('Quantity')))
-							  ->addRow((new TableRow())
-													   ->addCell(new TableCell('T-Shirt'))
+							  ->addRow((new TableRow())->addCell(new TableCell('T-Shirt'))
 													   ->addCell(new TableCell('$19.99'))
 													   ->addCell(new TableCell('1')))
 							  ->addRow((new TableRow())->addCell(new TableCell('Pillow'))

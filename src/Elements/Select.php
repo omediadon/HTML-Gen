@@ -7,6 +7,9 @@ use function array_merge;
 use function array_unshift;
 
 class Select extends HtmlElement{
+	protected array $dontFlush = [
+		'name',
+	];
 
 	public function __construct(string $name, bool $multiple = false, array $attributes = []){
 		$selectAttributes = [

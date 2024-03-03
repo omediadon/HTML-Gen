@@ -3,12 +3,19 @@
 namespace Xana\GenHtml\Elements;
 
 use Xana\GenHtml\HtmlContainer;
-use Xana\GenHtml\HtmlElement;
 use function array_merge;
 
 class Form extends HtmlContainer{
-	public function __construct($action = '', array $attributes = []){
-		$formAttributes = ['action' => $action];
+	protected array $dontFlush = [
+		'action',
+		'method'
+	];
+
+	public function __construct(string $action, string $method, array $attributes = []){
+		$formAttributes = [
+			'action' => $action,
+			'method' => $method
+		];
 		parent::__construct("form", array_merge($formAttributes, $attributes));
 	}
 }
