@@ -21,6 +21,7 @@ jobs:
             exit 1  # Fail the workflow
           fi
           echo "Tag name: $VERSION"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Check if commit message indicates merge
         run: |
