@@ -3,6 +3,18 @@ All notable changes to this project will be documented in this file.
 
 
 
+## [1.0.2] - 03/03/2024
+
+### Added
+- Added more utility methods to `HtmlElement` and `AbstractInput` for easier manipulation of your code
+- Added support for conditional rendering
+- Added support for conditional replacement
+
+### Changed
+- Fixed the constructor for `Form` element
+### Fixed
+
+
 ## [1.0.1] - 03/03/2024
 
 ### Added
