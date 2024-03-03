@@ -62,5 +62,8 @@ jobs:
       - name: Create tag
         if: success()
         run: |
+          git config --global user.name "Omar SAKHRAOUI"
+          git config --global user.email "webmaster@xanaserver.cloud"
+          git config --list
           git tag -a "$VERSION" -m "Version $VERSION"
           git push origin --tags
