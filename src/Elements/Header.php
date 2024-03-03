@@ -6,8 +6,6 @@ use InvalidArgumentException;
 use Xana\GenHtml\HtmlElement;
 
 class Header extends HtmlElement{
-	private int $level;
-
 	public function __construct(int $level, string $text,){
 		parent::__construct($this->level($level));
 		$this->setText($text);

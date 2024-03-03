@@ -9,16 +9,19 @@ use function implode;
 use function str_replace;
 
 abstract class HtmlElement{
-	protected string $defaultClasses     = "";
-	protected string $tagName;
-	protected array  $attributes         = [];
-	protected array  $classes            = [];
-	protected array  $elements           = [];
-	protected array  $inlineElements     = [];
-	protected string $text               = "";
-	private bool     $hasDefaultClasses  = true;
-	private bool     $keepDefaultClasses = false;
-	private bool     $selfClosing        = false;
+	protected array      $dontFlush          = [];
+	protected string     $defaultClasses     = "";
+	protected string     $tagName;
+	protected array      $attributes         = [];
+	protected array      $classes            = [];
+	protected array      $elements           = [];
+	protected array      $inlineElements     = [];
+	protected string     $text               = "";
+	private bool         $hasDefaultClasses  = true;
+	private bool         $keepDefaultClasses = false;
+	private bool         $selfClosing        = false;
+	private ?HtmlElement $replacement        = null;
+	private bool         $shouldRender       = true;
 
 	public function __construct(string $tagName, array $attributes = []){
 		$this->tagName    = $tagName;
@@ -26,6 +29,12 @@ abstract class HtmlElement{
 	}
 
 	public function render(): string{
+		if($this->replacement != null){
+			return $this->replacement->render();
+		}
+		if(!$this->shouldRender){
+			return "";
+		}
 		$this->setClasses();
 		$attributes = [];
 		foreach($this->attributes as $key => $value){
@@ -72,13 +81,69 @@ abstract class HtmlElement{
 		return $this;
 	}
 
+	public function replaceIf(bool $condition, HtmlElement $replacement): static{
+		if($condition){
+			$this->replacement = $replacement;
+		}
+
+		return $this;
+	}
+
+	public function flushAttribute(?string $name = null): static{
+		if(!is_null($name) && !in_array($name, $this->dontFlush)){
+			if($name === 'class'){
+				$this->classes = [];
+				if(!$this->keepDefaultClasses){
+					$this->defaultClasses    = '';
+					$this->hasDefaultClasses = false;
+				}
+			}
+			else{
+				if(isset($this->attributes[$name])){
+					unset($this->attributes[$name]);
+				}
+			}
+		}
+		else if(is_null($name)){
+			$filter = function($key){
+				return in_array($key, $this->dontFlush);
+			};
+			if(!$this->keepDefaultClasses){
+				$this->defaultClasses    = '';
+				$this->hasDefaultClasses = false;
+			}
+			$this->classes    = [];
+			$this->attributes = array_filter($this->attributes, $filter, ARRAY_FILTER_USE_KEY);
+		}
+
+		return $this;
+	}
+
+	public function id(string $id): static{
+		$this->attributes['id'] = $id;
+
+		return $this;
+	}
+
+	public function data(string $name, string $data): static{
+		$this->attributes['data-' . $name] = $data;
+
+		return $this;
+	}
+
 	public function keepDefaultClasses(): static{
 		$this->keepDefaultClasses = true;
 
 		return $this;
 	}
 
-	public function selfClosing(){
+	public function rendereIf(bool $condition): static{
+		$this->shouldRender = $condition;
+
+		return $this;
+	}
+
+	protected function selfClosing(): void{
 		$this->selfClosing = true;
 	}
 

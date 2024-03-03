@@ -6,6 +6,9 @@ use Xana\GenHtml\HtmlElement;
 use function array_merge;
 
 class SelectOption extends HtmlElement{
+	protected array $dontFlush = [
+		'value',
+	];
 
 	public function __construct(string $text, string $value = '', ?string $selected = null, array $attributes = []){
 		$optionAttributes = ['value' => $value];
