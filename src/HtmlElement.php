@@ -20,6 +20,7 @@ abstract class HtmlElement{
 	private bool         $keepDefaultClasses = false;
 	private bool         $selfClosing        = false;
 	private ?HtmlElement $replacement        = null;
+	private bool         $shouldRender       = true;
 
 	public function __construct(string $tagName, array $attributes = []){
 		$this->tagName    = $tagName;
@@ -29,6 +30,9 @@ abstract class HtmlElement{
 	public function render(): string{
 		if($this->replacement != null){
 			return $this->replacement->render();
+		}
+		if(!$this->shouldRender){
+			return "";
 		}
 		$this->setClasses();
 		$attributes = [];
@@ -86,6 +90,12 @@ abstract class HtmlElement{
 		if($condition){
 			$this->replacement = $replacement;
 		}
+
+		return $this;
+	}
+
+	public function rendereIf(bool $condition): static{
+		$this->shouldRender = $condition;
 
 		return $this;
 	}
