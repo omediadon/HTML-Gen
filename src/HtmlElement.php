@@ -16,7 +16,7 @@ abstract class HtmlElement{
 	protected array  $elements           = [];
 	protected array  $inlineElements     = [];
 	protected string $text               = "";
-	private bool     $hasDefaults        = true;
+	private bool     $hasDefaultClasses  = true;
 	private bool     $keepDefaultClasses = false;
 	private bool     $selfClosing        = false;
 
@@ -50,47 +50,20 @@ abstract class HtmlElement{
 	}
 
 	private function setClasses(): void{
-		/*if(empty($this->attributes['class']) && empty($this->classes) && $this->hasDefaults){
-			$this->attributes['class'] = $this->defaultClasses;
-			if(empty($this->attributes['class'])){
-				unset($this->attributes['class']);
-			}
-			return;
-		}
-		if($this->keepDefaultClasses && $this->hasDefaults){
-			$this->classes = array_unique(array_merge(explode(' ', $this->defaultClasses), $this->classes));
-		}
-		else{
-			$this->classes = array_unique($this->classes);
-		}
-		if(!empty($this->attributes['class'])){
-			$this->attributes['class'] = array_unique(explode(' ', $this->attributes['class']));
-			$this->classes             = array_merge($this->attributes['class'], $this->classes);
-		}
-		$this->attributes['class'] = implode(' ', $this->classes);
-		if(empty($this->attributes['class'])){
-			unset($this->attributes['class']);
-		}*/
-		// Combine and de-duplicate classes if necessary
-		if($this->hasDefaults){
-			$explodedDefaults = ($this->keepDefaultClasses || (empty($this->classes && !isset($this->attributes['class'])))) ? explode(' ', $this->defaultClasses) : [];
-			$this->classes    = array_unique(array_merge($explodedDefaults, $this->classes));
-		}
-		else{
-			$this->classes = array_unique($this->classes);
-		}
+		// Combine default and existing classes, removing duplicates
+		$shouldCombineWithDefaults = $this->hasDefaultClasses && ($this->keepDefaultClasses || (empty($this->classes) && !isset($this->attributes['class'])));
+		$this->classes             = array_unique(array_merge(($shouldCombineWithDefaults ? explode(' ', $this->defaultClasses) : []), $this->classes));
 
-		// Handle $this->attributes['class']
+		// Integrate classes from attributes, removing duplicates
 		if(!empty($this->attributes['class'])){
-			$this->attributes['class'] = array_unique(explode(' ', $this->attributes['class']));
-			$this->classes             = array_merge($this->classes, $this->attributes['class']);
-		}
-		else{
+			$this->classes = array_unique(array_merge($this->classes, explode(' ', $this->attributes['class'])));
 			unset($this->attributes['class']);
 		}
 
-		// Set final class string in attributes
-		$this->attributes['class'] = implode(' ', $this->classes);
+		// Reconstruct the 'class' attribute with combined classes
+		if(!empty($this->classes)){
+			$this->attributes['class'] = implode(' ', $this->classes);
+		}
 	}
 
 	public function addClass(string $class): static{
@@ -122,7 +95,7 @@ abstract class HtmlElement{
 	}
 
 	protected function noDefaults(): void{
-		$this->hasDefaults = false;
+		$this->hasDefaultClasses = false;
 	}
 
 	protected function setText(string $text): static{
