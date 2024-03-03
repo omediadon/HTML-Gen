@@ -10,8 +10,9 @@ class TextArea extends HtmlElement{
 	];
 
 	public function __construct(string $name, array $attributes = []){
-		$textAreaAttributes   = ['name' => $name];
-		$this->defaultClasses = 'form-control';
+		$textAreaAttributes      = ['name' => $name];
+		$this->defaultClasses    = 'form-control';
+		$this->hasDefaultClasses = true;
 		parent::__construct("textarea", array_merge($textAreaAttributes, $attributes));
 	}
 }

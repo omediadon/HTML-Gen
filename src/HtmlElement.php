@@ -17,7 +17,7 @@ abstract class HtmlElement{
 	protected array      $elements           = [];
 	protected array      $inlineElements     = [];
 	protected string     $text               = "";
-	private bool         $hasDefaultClasses  = false;
+	protected bool       $hasDefaultClasses  = false;
 	private bool         $keepDefaultClasses = false;
 	private bool         $selfClosing        = false;
 	private ?HtmlElement $replacement        = null;

@@ -18,7 +18,8 @@ class Select extends HtmlElement{
 		if($multiple){
 			$selectAttributes['multiple'] = $multiple;
 		}
-		$this->defaultClasses = 'form-control';
+		$this->defaultClasses    = 'form-control';
+		$this->hasDefaultClasses = true;
 		parent::__construct("select", array_merge($selectAttributes, $attributes));
 	}
 

@@ -13,8 +13,9 @@ abstract class HtmlList extends HtmlElement{
 	 */
 	public function __construct(string $type, array $attributes = []){
 		parent::__construct($type, $attributes);
-		$this->type           = $type;
-		$this->defaultClasses = 'list-group';
+		$this->type              = $type;
+		$this->defaultClasses    = 'list-group';
+		$this->hasDefaultClasses = true;
 	}
 
 	public function addItem(ListItem $element): HtmlList{
