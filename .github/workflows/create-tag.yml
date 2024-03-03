@@ -31,12 +31,12 @@ jobs:
               echo "Detected an unsuccessful merge request."
               exit 1  
             fi
-          
+          else
             echo "Did not detected a merge request."
             exit 1  
           fi
 
-      - name: Exclude VERSION file **(moved before tag creation)**
+      - name: Exclude VERSION file
         run: |
           git update-index --skip-worktree VERSION
           echo "Tag name: $VERSION"
