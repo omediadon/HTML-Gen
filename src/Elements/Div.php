@@ -6,7 +6,7 @@ use Xana\GenHtml\HtmlContainer;
 
 class Div extends HtmlContainer{
 	public function __construct(array $attributes = []){
-		$this->defaultClass = 'row';
+		$this->defaultClasses = 'row';
 		parent::__construct("div", $attributes);
 	}
 }

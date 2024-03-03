@@ -13,8 +13,8 @@ abstract class HtmlList extends HtmlElement{
 	 */
 	public function __construct(string $type, array $attributes = []){
 		parent::__construct($type, $attributes);
-		$this->type         = $type;
-		$this->defaultClass = 'list-group';
+		$this->type           = $type;
+		$this->defaultClasses = 'list-group';
 	}
 
 	public function addItem(ListItem $element): HtmlList{
