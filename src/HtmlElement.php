@@ -17,7 +17,7 @@ abstract class HtmlElement{
 	protected array      $elements           = [];
 	protected array      $inlineElements     = [];
 	protected string     $text               = "";
-	private bool         $hasDefaultClasses  = true;
+	private bool         $hasDefaultClasses  = false;
 	private bool         $keepDefaultClasses = false;
 	private bool         $selfClosing        = false;
 	private ?HtmlElement $replacement        = null;
@@ -60,8 +60,9 @@ abstract class HtmlElement{
 
 	private function setClasses(): void{
 		// Combine default and existing classes, removing duplicates
-		$shouldCombineWithDefaults = $this->hasDefaultClasses && ($this->keepDefaultClasses || (empty($this->classes) && !isset($this->attributes['class'])));
-		$this->classes             = array_unique(array_merge(($shouldCombineWithDefaults ? explode(' ', $this->defaultClasses) : []), $this->classes));
+		$shouldCombineWithDefaults = ($this->hasDefaultClasses && !empty($this->defaultClasses)) && ($this->keepDefaultClasses || (empty($this->classes) && !isset($this->attributes['class'])));
+		$this->classes             = array_unique(array_merge(($shouldCombineWithDefaults && !empty($this->defaultClasses) ? explode(' ', $this->defaultClasses) : []),
+			$this->classes));
 
 		// Integrate classes from attributes, removing duplicates
 		if(!empty($this->attributes['class'])){
