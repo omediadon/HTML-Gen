@@ -94,6 +94,19 @@ abstract class HtmlElement{
 		return $this;
 	}
 
+	public function flushAttribute(?string $name = null): static{
+		if(isset($name)){
+			if($name == 'class'){
+				$this->classes = [];
+			}
+			if(isset($this->attributes[$name])){
+				unset($this->attributes[$name]);
+			}
+		}
+
+		return $this;
+	}
+
 	public function rendereIf(bool $condition): static{
 		$this->shouldRender = $condition;
 
