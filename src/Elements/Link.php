@@ -9,6 +9,7 @@ class Link extends HtmlElement{
 		'href',
 		'target'
 	];
+
 	public function __construct(string $href, string $text, string $target = '_self', array $attributes = []){
 		$linkAttributes = [
 			'href'   => $href,

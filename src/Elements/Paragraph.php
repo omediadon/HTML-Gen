@@ -2,7 +2,6 @@
 
 namespace Xana\GenHtml\Elements;
 
-use Xana\GenHtml\HtmlElement;
 use Xana\GenHtml\HtmlInlineContainer;
 
 class Paragraph extends HtmlInlineContainer{

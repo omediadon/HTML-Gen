@@ -9,6 +9,7 @@ class Meta extends HtmlElement{
 		'name',
 		'content'
 	];
+
 	public function __construct(string $name, string $content){
 		parent::__construct("meta", [
 			"name"    => $name,

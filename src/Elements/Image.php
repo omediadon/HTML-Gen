@@ -8,6 +8,7 @@ class Image extends HtmlElement{
 	protected array $dontFlush = [
 		'src',
 	];
+
 	public function __construct(string $src, $alt = "", array $attributes = []){
 		$imgAttributes = [
 			"src" => $src,
