@@ -11,7 +11,6 @@ class TableHeader extends TableRow{
 		parent::__construct('thead');
 		$this->isHeader          = true;
 		$this->defaultClasses    = 'table-dark';
-		$this->hasDefaultClasses = true;
 	}
 
 }

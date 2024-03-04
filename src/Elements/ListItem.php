@@ -9,6 +9,5 @@ class ListItem extends HtmlElement{
 		parent::__construct('li', $attributes);
 		$this->setText($text);
 		$this->defaultClasses    = 'list-group-item';
-		$this->hasDefaultClasses = true;
 	}
 }
