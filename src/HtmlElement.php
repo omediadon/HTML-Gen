@@ -17,7 +17,6 @@ abstract class HtmlElement{
 	protected array      $elements           = [];
 	protected array      $inlineElements     = [];
 	protected string     $text               = "";
-	protected bool       $hasDefaultClasses  = false;
 	private bool         $keepDefaultClasses = false;
 	private bool         $selfClosing        = false;
 	private ?HtmlElement $replacement        = null;
@@ -60,13 +59,15 @@ abstract class HtmlElement{
 
 	private function setClasses(): void{
 		// Combine default and existing classes, removing duplicates
-		$shouldCombineWithDefaults = ($this->hasDefaultClasses && !empty($this->defaultClasses)) && ($this->keepDefaultClasses || (empty($this->classes) && !isset($this->attributes['class'])));
-		$this->classes             = array_unique(array_merge(($shouldCombineWithDefaults && !empty($this->defaultClasses) ? explode(' ', $this->defaultClasses) : []),
-			$this->classes));
+		$shouldKeppDefaults        = empty($this->classes) && !isset($this->attributes['class']);
+		$shouldCombineWithDefaults = ($this->keepDefaultClasses && !empty($this->defaultClasses)) || $shouldKeppDefaults;
+		$mergedDefaults            = $shouldCombineWithDefaults && !empty($this->defaultClasses) ? explode(' ', $this->defaultClasses) : [];
+		$this->classes             = array_unique(array_merge($mergedDefaults, $this->classes));
 
 		// Integrate classes from attributes, removing duplicates
 		if(!empty($this->attributes['class'])){
-			$this->classes = array_unique(array_merge($this->classes, explode(' ', $this->attributes['class'])));
+			$mergedClasses = array_merge($this->classes, explode(' ', $this->attributes['class']));
+			$this->classes = array_unique($mergedClasses);
 			unset($this->attributes['class']);
 		}
 
@@ -95,8 +96,7 @@ abstract class HtmlElement{
 			if($name === 'class'){
 				$this->classes = [];
 				if(!$this->keepDefaultClasses){
-					$this->defaultClasses    = '';
-					$this->hasDefaultClasses = false;
+					$this->defaultClasses = '';
 				}
 			}
 			else{
@@ -110,8 +110,7 @@ abstract class HtmlElement{
 				return in_array($key, $this->dontFlush);
 			};
 			if(!$this->keepDefaultClasses){
-				$this->defaultClasses    = '';
-				$this->hasDefaultClasses = false;
+				$this->defaultClasses = '';
 			}
 			$this->classes    = [];
 			$this->attributes = array_filter($this->attributes, $filter, ARRAY_FILTER_USE_KEY);
@@ -161,7 +160,7 @@ abstract class HtmlElement{
 	}
 
 	protected function noDefaults(): void{
-		$this->hasDefaultClasses = false;
+		$this->defaultClasses = "";
 	}
 
 	protected function setText(string $text): static{
