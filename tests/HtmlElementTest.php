@@ -3,8 +3,25 @@
 namespace Xana\GenHtml\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Xana\GenHtml\Elements\Div;
+use Xana\GenHtml\Elements\Form;
+use Xana\GenHtml\Elements\Image;
+use Xana\GenHtml\Elements\LineBreak;
+use Xana\GenHtml\Elements\Link;
+use Xana\GenHtml\Elements\Paragraph;
 use Xana\GenHtml\HtmlElement;
 
+/**
+ * @covers \Xana\GenHtml\HtmlElement
+ * @covers \Xana\GenHtml\HtmlContainer
+ * @covers \Xana\GenHtml\HtmlInlineContainer
+ * @covers \Xana\GenHtml\Elements\Image
+ * @covers \Xana\GenHtml\Elements\Div
+ * @covers \Xana\GenHtml\Elements\Paragraph
+ * @covers \Xana\GenHtml\Elements\Link
+ * @covers \Xana\GenHtml\Elements\LineBreak
+ * @covers \Xana\GenHtml\Elements\Form
+ */
 class HtmlElementTest extends TestCase{
 	private HtmlElement $htmlElement;
 
@@ -13,24 +30,147 @@ class HtmlElementTest extends TestCase{
 		};
 	}
 
+	/**
+	 * @covers \Xana\GenHtml\HtmlElement::id
+	 */
 	public function testId(){
-		$html = $this->htmlElement->render();
-		$this->assertEquals('<div ></div>', $html);
+		$htmlElement = (clone $this->htmlElement)->id('test');
+		$this->assertEquals('<div id="test"></div>', (clone $htmlElement)->render());
+		$this->assertEquals('<div ></div>', (clone $htmlElement)->flushAttribute()
+																->render());
 	}
 
-	public function testKeepDefaultClasses(){}
+	/**
+	 * @covers \Xana\GenHtml\HtmlElement::keepDefaultClasses
+	 */
+	public function testKeepDefaultClasses(){
+		$htmlElement = new class('div') extends HtmlElement{
+			protected string $defaultClasses = "class";
+		};
 
-	public function testRendereIf(){}
+		$this->assertEquals('<div class="class"></div>', (clone $htmlElement)->render());
+		$this->assertEquals('<div class="class another"></div>', (clone $htmlElement)->keepDefaultClasses()
+																					 ->addClass("another")
+																					 ->render());
+		$this->assertEquals('<div class="another"></div>', (clone $htmlElement)->addClass("another")
+																			   ->render());
+		$this->assertEquals('<div ></div>', (clone $htmlElement)->flushAttribute()
+																->render());
+		$this->assertEquals('<div class="class"></div>', ($htmlElement)->addClass("another")
+																	   ->keepDefaultClasses()
+																	   ->flushAttribute()
+																	   ->render());
+		$this->assertEquals('<div class="class"></div>', ($htmlElement)->addClass("another")
+																	   ->flushAttribute('class')
+																	   ->render());
+	}
 
-	public function testReplaceIf(){}
+	/**
+	 * @covers \Xana\GenHtml\HtmlElement::rendereIf
+	 */
+	public function testRendereIf(){
+		$this->assertEquals('<div ></div>', $this->htmlElement->render());
+		$this->assertEquals('', (clone $this->htmlElement)->rendereIf(false)
+														  ->render());
+	}
 
-	public function testFlushAttribute(){}
+	/**
+	 * @covers \Xana\GenHtml\HtmlElement::replaceIf
+	 * @covers \Xana\GenHtml\Elements\Form::__construct
+	 */
+	public function testReplaceIf(){
+		$html = (clone $this->htmlElement)->id('test')
+										  ->replaceIf(true, new Form('/', 'get'))
+										  ->render();
+		$this->assertEquals('<form action="/" method="get"></form>', $html);
+	}
 
-	public function testRender(){}
+	/**
+	 * @covers \Xana\GenHtml\HtmlElement::flushAttribute
+	 * @covers \Xana\GenHtml\Elements\Div::__construct
+	 * */
+	public function testFlushAttribute(){
+		$html = (clone $this->htmlElement)->id('test')
+										  ->addClass('test');
+		$this->assertEquals('<div class="test"></div>', (clone $html)->flushAttribute('id')
+																	 ->render());
+		$this->assertEquals('<div ></div>', (clone $html)->flushAttribute()
+														 ->render());
+		$div = new Div();
+		$this->assertEquals('<div ></div>', $div->flushAttribute('class')
+												->render());
+	}
 
-	public function test__construct(){}
+	/**
+	 * @covers \Xana\GenHtml\HtmlElement::render
+	 */
+	public function testRender(){
+		$html = (clone $this->htmlElement)->id('test')
+										  ->render();
+		$this->assertEquals('<div id="test"></div>', $html);
+	}
 
-	public function testAddClass(){}
+	/**
+	 * @covers \Xana\GenHtml\HtmlElement::__construct
+	 */
+	public function test__construct(){
+		$htmlElement = new class('div') extends HtmlElement{
+		};
 
-	public function testData(){}
+		$this->assertEquals('<div ></div>', (clone $htmlElement)->render());
+	}
+
+	/**
+	 * @covers \Xana\GenHtml\HtmlElement::addClass
+	 */
+	public function testAddClass(){
+		$html = (clone $this->htmlElement)->addClass('test')
+										  ->addClass('another')
+										  ->render();
+		$this->assertEquals('<div class="test another"></div>', $html);
+	}
+
+	/**
+	 * @covers \Xana\GenHtml\HtmlElement::data
+	 */
+	public function testData(){
+		$html = (clone $this->htmlElement)->data('data', 'test')
+										  ->render();
+		$this->assertEquals('<div data-data="test"></div>', $html);
+	}
+
+	/**
+	 * @covers \Xana\GenHtml\HtmlElement::selfClosing
+	 * @covers \Xana\GenHtml\Elements\LineBreak::__construct
+	 */
+	public function testSelfClosing(){
+		$this->assertEquals('<br  />', (new LineBreak())->render());
+	}
+
+	/**
+	 * @covers \Xana\GenHtml\HtmlElement::addElement
+	 * @covers \Xana\GenHtml\HtmlContainer::addElement
+	 * @covers \Xana\GenHtml\Elements\Div::__construct
+	 */
+	public function testAddElement(){
+		$this->assertEquals('<div class="row"><div class="row"></div></div>', (new Div())->addElement(new Div())
+																						 ->render());
+	}
+
+	/**
+	 * @covers \Xana\GenHtml\HtmlElement::addElement
+	 * @covers \Xana\GenHtml\HtmlElement::setText
+	 * @covers \Xana\GenHtml\HtmlInlineContainer::addInlineElement
+	 * @covers \Xana\GenHtml\Elements\Link::__construct
+	 * @covers \Xana\GenHtml\Elements\Paragraph::__construct
+	 * @covers \Xana\GenHtml\Elements\Image::__construct
+	 */
+	public function testAddInlineElement(){
+		$paragraph = (new Paragraph("Here is a {link}"))->addInlineElement('link', new Link('/', 'link'));
+		$this->assertEquals('<p >Here is a <a href="/" target="_self">link</a></p>', $paragraph->render());
+		$this->assertEquals('<p >and here is an <img src="/someimage.png" alt="alted"></img></p>',
+							(new Paragraph('and here is an {image}'))->addInlineElement('image', new Image('/someimage.png', 'alted'))
+																	 ->render());
+	}
+
 }
