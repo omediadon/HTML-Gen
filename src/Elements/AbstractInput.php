@@ -11,12 +11,12 @@ abstract class AbstractInput extends HtmlElement{
 	];
 
 	public function __construct(string $type, string $name, array $attributes = [],){
-		$inputAttributes         = [
+		$inputAttributes      = [
 			"type" => $type,
 			"name" => $name,
 		];
-		$this->defaultClasses    = 'form-control';
-		$this->hasDefaultClasses = true;
+		$this->defaultClasses = 'form-control';
+		$this->selfClosing();
 		parent::__construct("input", array_merge($inputAttributes, $attributes),);
 	}
 
