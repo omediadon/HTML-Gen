@@ -22,8 +22,8 @@ class Select extends HtmlElement{
 		parent::__construct("select", array_merge($selectAttributes, $attributes));
 	}
 
-	public function addEmptyOption(): static{
-		$emptyOption = new SelectOption('-- Please Select --');
+	public function addEmptyOption(string $text = '-- Please Select --'): static{
+		$emptyOption = new SelectOption($text);
 		array_unshift($this->elements, $emptyOption);
 
 		return $this;

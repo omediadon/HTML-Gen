@@ -10,11 +10,11 @@ class SelectOption extends HtmlElement{
 		'value',
 	];
 
-	public function __construct(string $text, string $value = '', ?string $selected = null, array $attributes = []){
+	public function __construct(string $text, string $value = '', bool $selected = false, array $attributes = []){
 		$optionAttributes = ['value' => $value];
-		if(!empty($selected)){
+		if($selected){
 			$optionAttributes = array_merge([
-												'selected' => $selected,
+												'selected' =>'selected' ,
 											], $optionAttributes);
 		}
 

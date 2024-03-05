@@ -10,6 +10,7 @@ use Xana\GenHtml\Elements\File;
 use Xana\GenHtml\Elements\Password;
 use Xana\GenHtml\Elements\Phone;
 use Xana\GenHtml\Elements\Text;
+use Xana\GenHtml\Elements\TextArea;
 
 /**
  * @covers \Xana\GenHtml\Elements\AbstractInput::__construct
@@ -102,5 +103,14 @@ class AbstractInputTest extends TestCase{
 	public function testName(){
 		$htmlElement = (clone $this->htmlElement)->name('another-name');
 		$this->assertEquals('<input type="text" name="another-name" class="form-control" />', (clone $htmlElement)->render());
+	}
+
+	/**
+	 * @covers \Xana\GenHtml\Elements\TextArea::__construct
+	 */
+	public function testTextArea(){
+		$table = new TextArea('meta');
+
+		$this->assertEquals('<textarea name="meta" class="form-control"></textarea>', $table->render());
 	}
 }
