@@ -12,7 +12,7 @@ use Xana\GenHtml\Elements\Phone;
 use Xana\GenHtml\Elements\Text;
 
 /**
- * @covers \Xana\GenHtml\Elements\AbstractInput
+ * @covers \Xana\GenHtml\Elements\AbstractInput::__construct
  * @covers \Xana\GenHtml\HtmlElement::__construct
  * @covers \Xana\GenHtml\HtmlElement::render
  * @covers \Xana\GenHtml\HtmlElement::selfClosing

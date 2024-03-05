@@ -12,15 +12,9 @@ use Xana\GenHtml\Elements\Paragraph;
 use Xana\GenHtml\HtmlElement;
 
 /**
- * @covers \Xana\GenHtml\HtmlElement
- * @covers \Xana\GenHtml\HtmlContainer
- * @covers \Xana\GenHtml\HtmlInlineContainer
- * @covers \Xana\GenHtml\Elements\Image
- * @covers \Xana\GenHtml\Elements\Div
- * @covers \Xana\GenHtml\Elements\Paragraph
- * @covers \Xana\GenHtml\Elements\Link
- * @covers \Xana\GenHtml\Elements\LineBreak
- * @covers \Xana\GenHtml\Elements\Form
+ * @covers \Xana\GenHtml\HtmlElement::__construct
+ * @covers \Xana\GenHtml\HtmlElement::render
+ * @covers \Xana\GenHtml\HtmlElement::setClasses
  */
 class HtmlElementTest extends TestCase{
 	private HtmlElement $htmlElement;
@@ -32,6 +26,7 @@ class HtmlElementTest extends TestCase{
 
 	/**
 	 * @covers \Xana\GenHtml\HtmlElement::id
+	 * @covers \Xana\GenHtml\HtmlElement::flushAttribute
 	 */
 	public function testId(){
 		$htmlElement = (clone $this->htmlElement)->id('test');
@@ -42,6 +37,8 @@ class HtmlElementTest extends TestCase{
 
 	/**
 	 * @covers \Xana\GenHtml\HtmlElement::keepDefaultClasses
+	 * @covers \Xana\GenHtml\HtmlElement::flushAttribute
+	 * @covers \Xana\GenHtml\HtmlElement::addClass
 	 */
 	public function testKeepDefaultClasses(){
 		$htmlElement = new class('div') extends HtmlElement{
@@ -76,6 +73,7 @@ class HtmlElementTest extends TestCase{
 
 	/**
 	 * @covers \Xana\GenHtml\HtmlElement::replaceIf
+	 * @covers \Xana\GenHtml\HtmlElement::id
 	 * @covers \Xana\GenHtml\Elements\Form::__construct
 	 */
 	public function testReplaceIf(){
@@ -88,6 +86,8 @@ class HtmlElementTest extends TestCase{
 	/**
 	 * @covers \Xana\GenHtml\HtmlElement::flushAttribute
 	 * @covers \Xana\GenHtml\Elements\Div::__construct
+	 * @covers \Xana\GenHtml\HtmlElement::id
+	 * @covers \Xana\GenHtml\HtmlElement::addClass
 	 * */
 	public function testFlushAttribute(){
 		$html = (clone $this->htmlElement)->id('test')
@@ -102,6 +102,7 @@ class HtmlElementTest extends TestCase{
 	}
 
 	/**
+	 * @covers \Xana\GenHtml\HtmlElement::id
 	 * @covers \Xana\GenHtml\HtmlElement::render
 	 */
 	public function testRender(){
@@ -142,6 +143,7 @@ class HtmlElementTest extends TestCase{
 	/**
 	 * @covers \Xana\GenHtml\HtmlElement::selfClosing
 	 * @covers \Xana\GenHtml\Elements\LineBreak::__construct
+	 * @covers \Xana\GenHtml\HtmlElement::noDefaults
 	 */
 	public function testSelfClosing(){
 		$this->assertEquals('<br  />', (new LineBreak())->render());
@@ -160,6 +162,8 @@ class HtmlElementTest extends TestCase{
 	/**
 	 * @covers \Xana\GenHtml\HtmlElement::addElement
 	 * @covers \Xana\GenHtml\HtmlElement::setText
+	 * @covers \Xana\GenHtml\HtmlElement::addInlineElement
+	 * @covers \Xana\GenHtml\HtmlElement::escapeHtml
 	 * @covers \Xana\GenHtml\HtmlInlineContainer::addInlineElement
 	 * @covers \Xana\GenHtml\Elements\Link::__construct
 	 * @covers \Xana\GenHtml\Elements\Paragraph::__construct

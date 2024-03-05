@@ -5,9 +5,6 @@ namespace Xana\GenHtml\Tests\Elements;
 use PHPUnit\Framework\TestCase;
 use Xana\GenHtml\Elements\Button;
 
-/**
- * @covers \Xana\GenHtml\Elements\Button
- */
 class ButtonTest extends TestCase{
 
 	/**
