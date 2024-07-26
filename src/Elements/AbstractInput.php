@@ -16,6 +16,7 @@ abstract class AbstractInput extends HtmlElement{
 			"name" => $name,
 		];
 		$this->defaultClasses = 'form-control';
+		$this->selfClosing();
 		parent::__construct("input", array_merge($inputAttributes, $attributes),);
 	}
 
