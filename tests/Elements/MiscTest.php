@@ -6,6 +6,9 @@ use PHPUnit\Framework\TestCase;
 use Xana\GenHtml\Elements\Header;
 use Xana\GenHtml\Elements\Meta;
 use Xana\GenHtml\Elements\Span;
+use Xana\GenHtml\Elements\GenericElement;
+use Xana\GenHtml\Elements\Div;
+use Xana\GenHtml\Factory\ElementFactory;
 
 /**
  * @covers \Xana\GenHtml\HtmlElement::__construct
@@ -47,6 +50,20 @@ class MiscTest extends TestCase{
 		$table = new Span('meta');
 
 		$this->assertEquals('<span >meta</span>', $table->render());
+	}
+
+	public function testGeneric(){
+		ElementFactory::registerCustomElement('rating-stars', function($attributes) {
+				$element = new Div(array_merge(['class' => 'rating'], $attributes));
+				for ($i = 0; $i < 5; $i++) {
+						$element->addElement(new GenericElement('span', ['class' => 'star']));
+				}
+				return $element;
+		});
+
+		$form = ElementFactory::createElement('rating-stars');
+
+		$this->assertEquals('<div class="rating"><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span></div>', $form->render());
 	}
 
 }

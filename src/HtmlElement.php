@@ -8,7 +8,7 @@ use function explode;
 use function implode;
 use function str_replace;
 
-abstract class HtmlElement{
+abstract class HtmlElement extends AbstractElement{
 	protected array      $dontFlush          = [];
 	protected string     $defaultClasses     = "";
 	protected string     $tagName;
