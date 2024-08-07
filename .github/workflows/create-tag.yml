@@ -87,6 +87,6 @@ jobs:
           tag_name: ${{ env.VERSION }}
           release_name: Release ${{ env.VERSION }}
           body: |
-            Readme will be updated soon...
+            ${{ env.CHANGELOG }}
           draft: false
           prerelease: false
