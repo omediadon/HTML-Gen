@@ -15,6 +15,7 @@ use Xana\GenHtml\HtmlElement;
  * @covers \Xana\GenHtml\HtmlElement::__construct
  * @covers \Xana\GenHtml\HtmlElement::render
  * @covers \Xana\GenHtml\HtmlElement::setClasses
+ * @covers \Xana\GenHtml\AbstractElement::__construct
  */
 class HtmlElementTest extends TestCase{
 	private HtmlElement $htmlElement;
@@ -172,6 +173,8 @@ class HtmlElementTest extends TestCase{
 	public function testAddInlineElement(){
 		$paragraph = (new Paragraph("Here is a {link}"))->addInlineElement('link', new Link('/', 'link'));
 		$this->assertEquals('<p >Here is a <a href="/" target="_self">link</a></p>', $paragraph->render());
+		/** @noinspection HtmlUnknownTarget */
+		/** @noinspection HtmlExtraClosingTag */
 		$this->assertEquals('<p >and here is an <img src="/someimage.png" alt="alted"></img></p>',
 							(new Paragraph('and here is an {image}'))->addInlineElement('image', new Image('/someimage.png', 'alted'))
 																	 ->render());

@@ -16,6 +16,7 @@ use Xana\GenHtml\Factory\ElementFactory;
  * @covers \Xana\GenHtml\HtmlElement::render
  * @covers \Xana\GenHtml\HtmlElement::setClasses
  * @covers \Xana\GenHtml\HtmlElement::setText
+ * @covers \Xana\GenHtml\AbstractElement::__construct
  */
 class MiscTest extends TestCase{
 
@@ -52,6 +53,14 @@ class MiscTest extends TestCase{
 		$this->assertEquals('<span >meta</span>', $table->render());
 	}
 
+	/**
+	 * @covers \Xana\GenHtml\Elements\Div::__construct
+	 * @covers \Xana\GenHtml\Elements\GenericElement::__construct
+	 * @covers \Xana\GenHtml\Factory\ElementFactory::createElement
+	 * @covers \Xana\GenHtml\Factory\ElementFactory::registerCustomElement
+	 * @covers \Xana\GenHtml\HtmlContainer::addElement
+	 * @covers \Xana\GenHtml\HtmlElement::addElement
+	 */
 	public function testGeneric(){
 		ElementFactory::registerCustomElement('rating-stars', function($attributes) {
 				$element = new Div(array_merge(['class' => 'rating'], $attributes));

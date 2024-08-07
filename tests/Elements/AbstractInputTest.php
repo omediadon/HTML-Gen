@@ -15,6 +15,7 @@ use Xana\GenHtml\Elements\TextArea;
 /**
  * @covers \Xana\GenHtml\Elements\AbstractInput::__construct
  * @covers \Xana\GenHtml\HtmlElement::__construct
+ * @covers \Xana\GenHtml\AbstractElement::__construct
  * @covers \Xana\GenHtml\HtmlElement::render
  * @covers \Xana\GenHtml\HtmlElement::selfClosing
  * @covers \Xana\GenHtml\HtmlElement::setClasses
