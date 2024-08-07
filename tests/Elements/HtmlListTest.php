@@ -15,6 +15,7 @@ use Xana\GenHtml\Elements\UnorderedList;
  * @covers \Xana\GenHtml\HtmlElement::addElement
  * @covers \Xana\GenHtml\HtmlElement::escapeHtml
  * @covers \Xana\GenHtml\HtmlElement::setText
+ * @covers \Xana\GenHtml\AbstractElement::__construct
  */
 class HtmlListTest extends TestCase{
 	/**

@@ -8,7 +8,7 @@ use function explode;
 use function implode;
 use function str_replace;
 
-abstract class HtmlElement{
+abstract class HtmlElement extends AbstractElement{
 	protected array      $dontFlush          = [];
 	protected string     $defaultClasses     = "";
 	protected string     $tagName;
@@ -23,8 +23,10 @@ abstract class HtmlElement{
 	private bool         $shouldRender       = true;
 
 	public function __construct(string $tagName, array $attributes = []){
+		parent::__construct($tagName, $attributes);
 		$this->tagName    = $tagName;
 		$this->attributes = $attributes;
+
 	}
 
 	public function render(): string{
@@ -48,7 +50,8 @@ abstract class HtmlElement{
 			foreach($this->elements as $element){
 				$innerHtml .= $element->render();
 			}
-			$template = "<$this->tagName " . implode(" ", $attributes) . ">" . $this->text . $innerHtml . "</{$this->tagName}>";
+			$template = "<$this->tagName " . implode(" ",
+													 $attributes) . ">" . $this->text . $innerHtml . "</{$this->tagName}>";
 			foreach($this->inlineElements as $key => $inlineElement){
 				$template = str_replace($key, $inlineElement->render(), $template);
 			}
@@ -61,7 +64,9 @@ abstract class HtmlElement{
 		// Combine default and existing classes, removing duplicates
 		$shouldKeppDefaults        = empty($this->classes) && !isset($this->attributes['class']);
 		$shouldCombineWithDefaults = ($this->keepDefaultClasses && !empty($this->defaultClasses)) || $shouldKeppDefaults;
-		$mergedDefaults            = $shouldCombineWithDefaults && !empty($this->defaultClasses) ? explode(' ', $this->defaultClasses) : [];
+		$mergedDefaults            = $shouldCombineWithDefaults && !empty($this->defaultClasses) ? explode(' ',
+																										   $this->defaultClasses)
+			: [];
 		$this->classes             = array_unique(array_merge($mergedDefaults, $this->classes));
 
 		// Integrate classes from attributes, removing duplicates

@@ -14,6 +14,7 @@ use Xana\GenHtml\Elements\SelectOption;
  * @covers \Xana\GenHtml\Elements\SelectOption::__construct
  * @covers \Xana\GenHtml\HtmlElement::escapeHtml
  * @covers \Xana\GenHtml\HtmlElement::setText
+ * @covers \Xana\GenHtml\AbstractElement::__construct
  */
 class SelectTest extends TestCase{
 	public function test__construct(){
@@ -30,6 +31,7 @@ class SelectTest extends TestCase{
 		$select = new Select('select', multiple: true);
 		$select->addEmptyOption();
 
+		/** @noinspection HtmlWrongAttributeValue */
 		$this->assertEquals('<select name="select" multiple="1" class="form-control"><option value="">-- Please Select --</option></select>', $select->render());
 	}
 
