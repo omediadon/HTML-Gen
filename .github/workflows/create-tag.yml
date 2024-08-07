@@ -66,3 +66,17 @@ jobs:
           git config --global user.email "omediadon@gmail.com"
           git tag -a "$VERSION" -m "Version $VERSION"
           git push origin --tags
+
+      - name: Create Release
+        if: success()
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ VERSION }}
+          release_name: Release ${{ VERSION }}
+          body: |
+            Readme will be updated soon...
+          draft: false
+          prerelease: false
