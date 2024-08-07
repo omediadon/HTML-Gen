@@ -20,8 +20,15 @@ jobs:
             echo "Error: VERSION file not found!"
             exit 1  # Fail the workflow
           fi
+          VERSION=$(cat CHANGELOG.md || true)
+          if [[ -z "$CHANGELOG" ]]; then
+            echo "Error: $CHANGELOG.md file not found!"
+            exit 1  # Fail the workflow
+          fi
           echo "Tag name: $VERSION"
           echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "Change log: $CHANGELOG"
+          echo "CHANGELOG=$CHANGELOG" >> $GITHUB_ENV
 
       - name: Check if commit message indicates merge
         run: |
@@ -40,7 +47,8 @@ jobs:
       - name: Exclude VERSION file
         run: |
           git update-index --skip-worktree VERSION
-          echo "Tag name: $VERSION"
+          git update-index --skip-worktree .github
+          echo "Ignored useless files for the release"
           
 
       - name: Validate composer.json and composer.lock
