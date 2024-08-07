@@ -27,8 +27,10 @@ jobs:
           fi
           echo "Tag name: $VERSION"
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "Change log: $CHANGELOG"
-          echo "CHANGELOG=$CHANGELOG" >> $GITHUB_ENV
+          echo "Change log: $CHANGELOG"          
+          echo "CHANGELOG<<EOF" >> $GITHUB_ENV
+          echo $CHANGELOG >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: Check if commit message indicates merge
         run: |
@@ -49,7 +51,7 @@ jobs:
           git update-index --skip-worktree VERSION
           git update-index --skip-worktree .github
           echo "Ignored useless files for the release"
-          
+
 
       - name: Validate composer.json and composer.lock
         run: |
