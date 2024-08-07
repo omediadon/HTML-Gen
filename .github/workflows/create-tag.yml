@@ -49,7 +49,7 @@ jobs:
       - name: Exclude useless files from release
         run: |
           git update-index --skip-worktree VERSION
-          git update-index --skip-worktree .github
+          git update-index --skip-worktree .github/
           echo "Ignored useless files for the release"
 
 
