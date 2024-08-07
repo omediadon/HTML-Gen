@@ -3,6 +3,18 @@ All notable changes to this project will be documented in this file.
 
 
 
+## [1.0.2.4] - 07/08/2024
+
+### Added
+- Added New Generic Elements through `GenericElement.php` to enable developer to create more "composable" elements
+- Added Element Factory
+- Added support for conditional replacement
+- Added an implementation of `Visitor Pattern` to render elements (incomplete)
+
+### Fixed
+- Fixed tests and coverage reports
+
+
 ## [1.0.2] - 03/03/2024
 
 ### Added
