@@ -13,16 +13,16 @@ jobs:
         with:
           php-version: 8.0
 
-      - name: Read version from file
+      - name: Read version and Changelogs from files
         run: |
           VERSION=$(cat VERSION || true)
           if [[ -z "$VERSION" ]]; then
             echo "Error: VERSION file not found!"
             exit 1  # Fail the workflow
           fi
-          VERSION=$(cat CHANGELOG.md || true)
+          CHANGELOG=$(cat CHANGELOG.md || true)
           if [[ -z "$CHANGELOG" ]]; then
-            echo "Error: $CHANGELOG.md file not found!"
+            echo "Error: CHANGELOG.md file not found!"
             exit 1  # Fail the workflow
           fi
           echo "Tag name: $VERSION"
@@ -44,7 +44,7 @@ jobs:
             exit 1  
           fi
 
-      - name: Exclude VERSION file
+      - name: Exclude useless files from release
         run: |
           git update-index --skip-worktree VERSION
           git update-index --skip-worktree .github
